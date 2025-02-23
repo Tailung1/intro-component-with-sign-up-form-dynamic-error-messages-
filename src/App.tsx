@@ -60,8 +60,6 @@ function App() {
       } else {
         setIsValid((prev) => ({ ...prev, FirstName: false }));
       }
-
-
     } else if (target.name === "LastName") {
       if (errors.LastName === undefined) {
         setIsValid((prev) => ({ ...prev, LastName: false }));
@@ -78,8 +76,6 @@ function App() {
       } else {
         setIsValid((prev) => ({ ...prev, Email: false }));
       }
-
-      
     } else if (target.name === "Password") {
       if (errors.Password === undefined) {
         setIsValid((prev) => ({ ...prev, Password: false }));
@@ -113,11 +109,17 @@ function App() {
 
   const handleSubmission = (event: React.FormEvent) => {
     event.preventDefault();
-    if (Object.values(userInfo).some((value) => !value)) return;
+    if (Object.values(isValid).some((value) => !value)) return;
     // setLager([userInfo]);
     setUserInfo({ FirstName: "", LastName: "", Email: "", Password: "" });
+    const updatedIsValid = { ...isValid };
+    {
+      Object.keys(updatedIsValid).forEach((key) => {
+        (updatedIsValid as Record<string,boolean| null>)[key] = null;
+      });
+    }
+    setIsValid(updatedIsValid);
   };
-
 
   return (
     <>
