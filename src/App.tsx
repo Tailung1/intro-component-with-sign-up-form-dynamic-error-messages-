@@ -106,19 +106,23 @@ function App() {
         updatedUserInfo[currectInput].length >= 5,
     }));
   }
+   const [shake, setShake] = useState<Record<string, boolean>>({
+     FirstName: false,
+     LastName: false,
+     Email: false,
+     Password: false,
+   });
 
   const handleSubmission = (event: React.FormEvent) => {
     event.preventDefault();
-    if (Object.values(isValid).some((value) => !value)) return;
-    // setLager([userInfo]);
-    setUserInfo({ FirstName: "", LastName: "", Email: "", Password: "" });
-    const updatedIsValid = { ...isValid };
-    {
-      Object.keys(updatedIsValid).forEach((key) => {
-        (updatedIsValid as Record<string,boolean| null>)[key] = null;
-      });
-    }
-    setIsValid(updatedIsValid);
+    const updatedShake:Record<string,boolean>={}
+    Object.entries(isValid).forEach(([key,value])=> {
+        if(!value) updatedShake[key]=true
+    })
+    setShake(updatedShake);
+    setTimeout(()=>{setShake({});},500);
+    
+    if(Object.values(isValid).some(value=>!value)) return;
   };
 
   return (
@@ -139,7 +143,7 @@ function App() {
               : isValid.FirstName === true
               ? "border-green-600"
               : "border-red-600"
-          }`}
+          } ${shake.FirstName ? "shake" : null}`}
         />
         {errors.FirstName ? (
           <p className="text-red-600 text-sm">{errors.FirstName}</p>
@@ -157,7 +161,7 @@ function App() {
               : isValid.LastName === true
               ? "border-green-600"
               : "border-red-600"
-          }`}
+          } ${shake.LastName ? "shake" : null}`}
         />
         {errors.LastName ? (
           <p className="text-red-600 text-sm">{errors.LastName}</p>
@@ -175,7 +179,7 @@ function App() {
               : isValid.Email === true
               ? "border-green-600"
               : "border-red-600"
-          }`}
+          } ${shake.Email?"shake" : null}`}
         />
         {errors.Email ? (
           <p className="text-red-600 text-sm">{errors.Email}</p>
@@ -193,7 +197,7 @@ function App() {
               : isValid.Password === true
               ? "border-green-600"
               : "border-red-600"
-          }`}
+          } ${shake.Password ? "shake" : null}`}
         />
         {errors.Password ? (
           <p className="text-red-600 text-sm">{errors.Password}</p>
