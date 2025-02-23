@@ -123,6 +123,19 @@ function App() {
     setTimeout(()=>{setShake({});},500);
     
     if(Object.values(isValid).some(value=>!value)) return;
+
+    setUserInfo({FirstName: "",
+    LastName: "",
+    Email: "",
+    Password: "",})
+
+    setIsValid({
+      FirstName: null,
+      LastName: null,
+      Email: null,
+      Password: null,
+    });
+
   };
 
   return (
