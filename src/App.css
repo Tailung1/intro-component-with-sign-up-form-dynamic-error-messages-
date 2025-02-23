@@ -4,3 +4,15 @@ body {
   align-items: center;
   height: 100vh;
 }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font: inherit;
+  color: inherit;
+}
+input {
+  outline: none; /* Removes default focus outline */
+  border: none; /* Removes border */
+  box-shadow: none; /* Prevents any browser-imposed shadow */
+}
