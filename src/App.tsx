@@ -49,18 +49,19 @@ function App() {
       ...userInfo,
       [event.target.name]: event.target.value,
     };
-    const currectInput = event.target.name;
+    const currentInput = event.target.name;
     const target = event.target as HTMLInputElement;
 
     if (target.name === "FirstName") {
       if (errors.FirstName === undefined) {
         setIsValid((prev) => ({ ...prev, FirstName: false }));
-        errors.FirstName = "Input Can't be empty";
       } else if (errors.FirstName) {
         setIsValid((prev) => ({ ...prev, FirstName: true }));
       } else {
         setIsValid((prev) => ({ ...prev, FirstName: false }));
       }
+
+
     } else if (target.name === "LastName") {
       if (errors.LastName === undefined) {
         setIsValid((prev) => ({ ...prev, LastName: false }));
@@ -77,6 +78,8 @@ function App() {
       } else {
         setIsValid((prev) => ({ ...prev, Email: false }));
       }
+
+      
     } else if (target.name === "Password") {
       if (errors.Password === undefined) {
         setIsValid((prev) => ({ ...prev, Password: false }));
@@ -87,7 +90,7 @@ function App() {
       }
     }
     setUserInfo(updatedUserInfo);
-    checkErrors(updatedUserInfo, currectInput);
+    checkErrors(updatedUserInfo, currentInput);
   };
 
   function checkErrors(updatedUserInfo: TUserProps, currectInput: string) {
