@@ -89,21 +89,21 @@ function App() {
     checkErrors(updatedUserInfo, currentInput);
   };
 
-  function checkErrors(updatedUserInfo: TUserProps, currectInput: string) {
+  function checkErrors(updatedUserInfo: TUserProps, currentInput: string) {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [currectInput]:
-        updatedUserInfo[currectInput] === ""
+      [currentInput]:
+        updatedUserInfo[currentInput] === ""
           ? "Input Can't be empty"
-          : updatedUserInfo[currectInput].split("").length < 5
+          : updatedUserInfo[currentInput].split("").length < 5
           ? "Enter at least 5 chars"
           : "",
     }));
     setIsValid((prevErrors) => ({
       ...prevErrors,
-      [currectInput]:
-        updatedUserInfo[currectInput] !== "" &&
-        updatedUserInfo[currectInput].length >= 5,
+      [currentInput]:
+        updatedUserInfo[currentInput] !== "" &&
+        updatedUserInfo[currentInput].length >= 5,
     }));
   }
    const [shake, setShake] = useState<Record<string, boolean>>({
