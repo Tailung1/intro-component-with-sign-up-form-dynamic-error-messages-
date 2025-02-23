@@ -15,6 +15,12 @@ function App() {
     Email: boolean | null;
     Password: boolean | null;
   };
+  type TErrorsProps = {
+    FirstName: string | undefined;
+    LastName: string | undefined;
+    Email: string | undefined;
+    Password: string | undefined;
+  };
 
   //   const [lager, setLager] = useState<TUserProps[]>([]);
   const [userInfo, setUserInfo] = useState<TUserProps>({
@@ -24,11 +30,11 @@ function App() {
     Password: "",
   });
 
-  const [errors, setErrors] = useState<TUserProps>({
-    FirstName: "",
-    LastName: "",
-    Email: "",
-    Password: "",
+  const [errors, setErrors] = useState<TErrorsProps>({
+    FirstName: undefined,
+    LastName: undefined,
+    Email: undefined,
+    Password: undefined,
   });
 
   const [isValid, setIsValid] = useState<TIsValidProps>({
@@ -44,6 +50,42 @@ function App() {
       [event.target.name]: event.target.value,
     };
     const currectInput = event.target.name;
+    const target = event.target as HTMLInputElement;
+
+    if (target.name === "FirstName") {
+      if (errors.FirstName === undefined) {
+        setIsValid((prev) => ({ ...prev, FirstName: false }));
+        errors.FirstName = "Input Can't be empty";
+      } else if (errors.FirstName) {
+        setIsValid((prev) => ({ ...prev, FirstName: true }));
+      } else {
+        setIsValid((prev) => ({ ...prev, FirstName: false }));
+      }
+    } else if (target.name === "LastName") {
+      if (errors.LastName === undefined) {
+        setIsValid((prev) => ({ ...prev, LastName: false }));
+      } else if (errors.LastName) {
+        setIsValid((prev) => ({ ...prev, LastName: true }));
+      } else {
+        setIsValid((prev) => ({ ...prev, LastName: false }));
+      }
+    } else if (target.name === "Email") {
+      if (errors.Email === undefined) {
+        setIsValid((prev) => ({ ...prev, Email: false }));
+      } else if (errors.Email) {
+        setIsValid((prev) => ({ ...prev, Email: true }));
+      } else {
+        setIsValid((prev) => ({ ...prev, Email: false }));
+      }
+    } else if (target.name === "Password") {
+      if (errors.Password === undefined) {
+        setIsValid((prev) => ({ ...prev, Password: false }));
+      } else if (errors.Password) {
+        setIsValid((prev) => ({ ...prev, Password: true }));
+      } else {
+        setIsValid((prev) => ({ ...prev, Password: false }));
+      }
+    }
     setUserInfo(updatedUserInfo);
     checkErrors(updatedUserInfo, currectInput);
   };
@@ -73,37 +115,6 @@ function App() {
     setUserInfo({ FirstName: "", LastName: "", Email: "", Password: "" });
   };
 
-  const handleFirstErrorMessage = (event: React.FormEvent) => {
-    const target = event.target as HTMLInputElement;
-    if (userInfo[target.name] === "") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [target.name]: "Input Can't be empty",
-      }));
-    }
-
-    {
-      errors.FirstName
-        ? setIsValid((prev) => ({ ...prev, FirstName: false }))
-        : null;
-    }
-
-    {
-      errors.LastName
-        ? setIsValid((prev) => ({ ...prev, LastName: false }))
-        : null;
-    }
-    {
-      errors.Email
-        ? setIsValid((prev) => ({ ...prev, Email: false }))
-        : null;
-    }
-    {
-      errors.Password
-        ? setIsValid((prev) => ({ ...prev, Password: false }))
-        : null;
-    }
-  };
 
   return (
     <>
@@ -114,7 +125,6 @@ function App() {
         <span>FirstName</span>
         <input
           onChange={handleChange}
-          onClick={handleFirstErrorMessage}
           type="text"
           name="FirstName"
           value={userInfo.FirstName}
@@ -133,7 +143,6 @@ function App() {
         <span>LastName</span>
         <input
           onChange={handleChange}
-          onClick={handleFirstErrorMessage}
           type="text"
           name="LastName"
           value={userInfo.LastName}
@@ -152,7 +161,6 @@ function App() {
         <span>Email</span>
         <input
           onChange={handleChange}
-          onClick={handleFirstErrorMessage}
           type="text"
           name="Email"
           value={userInfo.Email}
@@ -171,7 +179,6 @@ function App() {
         <span>Password</span>
         <input
           onChange={handleChange}
-          onClick={handleFirstErrorMessage}
           type="password"
           name="Password"
           value={userInfo.Password}
