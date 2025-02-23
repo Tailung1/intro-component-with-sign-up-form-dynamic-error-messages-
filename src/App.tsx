@@ -73,6 +73,9 @@ function App() {
       }));
     }
     setIsFirstNameValid(false)
+    setIsLastNameValid(false)
+    setIsEmailValid(false)
+    setPasswordValid(false);
   };
 
   
@@ -101,12 +104,52 @@ function App() {
         {errors.FirstName ? (
           <p className="text-red-600 text-sm">{errors.FirstName}</p>
         ) : null}
+
         <span>LastName</span>
         <input
           onChange={handleChange}
+          onClick={handleFirstErrorMessage}
           type="text"
           name="LastName"
           value={userInfo.LastName}
+          className={`border-[2px] rounded-lg p-[3px] border-solid ${
+            isLastNameValid === null
+              ? "border-gray-500"
+              : isLastNameValid === true
+              ? "border-green-600"
+              : "border-red-600"
+          }`}
+        />
+        {errors.LastName ? (
+          <p className="text-red-600 text-sm">{errors.LastName}</p>
+        ) : null}
+
+        <span>Email</span>
+        <input
+          onChange={handleChange}
+          onClick={handleFirstErrorMessage}
+          type="text"
+          name="Email"
+          value={userInfo.Email}
+          className={`border-[2px] rounded-lg p-[3px] border-solid ${
+            isEmailValid === null
+              ? "border-gray-500"
+              : isEmailValid === true
+              ? "border-green-600"
+              : "border-red-600"
+          }`}
+        />
+        {errors.Email ? (
+          <p className="text-red-600 text-sm">{errors.Email}</p>
+        ) : null}
+
+        <span>Password</span>
+        <input
+          onChange={handleChange}
+          onClick={handleFirstErrorMessage}
+          type="password"
+          name="Password"
+          value={userInfo.Password}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
             isPasswordValid === null
               ? "border-gray-500"
@@ -115,26 +158,9 @@ function App() {
               : "border-red-600"
           }`}
         />
-        <span>Email</span>
-        <input
-          onChange={handleChange}
-          type="text"
-          name="Email"
-          value={userInfo.Email}
-          className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isPasswordValid ? "border-green-600" : "border-red-600"
-          }`}
-        />
-        <span>Password</span>
-        <input
-          onChange={handleChange}
-          type="password"
-          name="Password"
-          value={userInfo.Password}
-          className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isPasswordValid ? "border-green-600" : "border-red-600"
-          }`}
-        />
+        {errors.Password ? (
+          <p className="text-red-600 text-sm">{errors.Password}</p>
+        ) : null}
 
         <button type="submit" className="p-[10px] rounded-lg bg-green-500">
           Submit
