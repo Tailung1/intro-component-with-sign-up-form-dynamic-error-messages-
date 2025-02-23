@@ -8,21 +8,41 @@ function App() {
     Email: string;
     Password: string;
   };
-  const [lager, setLager] = useState<TUserProps | null>(null);
+  const [lager, setLager] = useState<TUserProps[]>([]);
   const [userInfo, setUserInfo] = useState<TUserProps>({
     FirstName: "",
     LastName: "",
     Email: "",
     Password: "",
   });
+
+  const [errors, setErrors] = useState<TUserProps>({
+    FirstName: "",
+    LastName: "",
+    Email: "",
+    Password: "",
+  });
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    userInfo &&
-      setUserInfo({ ...userInfo, [event.target.name]: event.target.value });
+    const newUserInfo = {
+      ...userInfo,
+      [event.target.name]: event.target.value,
+    };
+    setUserInfo(newUserInfo);
+    checkErrors(newUserInfo);
   };
-  const handleSubmission = (event:React.FormEvent) => {
-    event.preventDefault()
-    if (Object.values(userInfo).some(value => !value)) return;
-    setLager(userInfo);
+
+  function checkErrors(updatedUserInfo: TUserProps) {
+    setErrors(prevErrors => ({
+      ...prevErrors,
+      FirstName: updatedUserInfo.FirstName === "" ? "Input Can't be empty" : "",
+    }));
+  }
+
+  const handleSubmission = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (Object.values(userInfo).some((value) => !value)) return;
+    setLager([userInfo]);
     setUserInfo({ FirstName: "", LastName: "", Email: "", Password: "" });
   };
 
@@ -37,30 +57,33 @@ function App() {
           type="text"
           name="FirstName"
           value={userInfo.FirstName}
-          className="border-[5px] border-solid border-red-500"
+          className="border-[5px] border-solid border-blue-500"
         />
+        {errors.FirstName ? (
+          <p className="text-red-600 text-sm">{errors.FirstName}</p>
+        ) : null}
         <input
           onChange={handleChange}
           type="text"
           name="LastName"
           value={userInfo.LastName}
-          className="border-[5px] border-solid border-red-500"
+          className="border-[5px] border-solid border-blue-500"
         />
         <input
           onChange={handleChange}
           type="text"
           name="Email"
           value={userInfo.Email}
-          className="border-[5px] border-solid border-red-500"
+          className="border-[5px] border-solid border-blue-500"
         />
         <input
           onChange={handleChange}
           type="password"
           name="Password"
           value={userInfo.Password}
-          className="border-[5px] border-solid border-red-500"
+          className="border-[5px] border-solid border-blue-500"
         />
-        <button type="submit" className="p-[10px] bg-blue-500">
+        <button type="submit" className="p-[10px] bg-green-500">
           Submit
         </button>
       </form>
