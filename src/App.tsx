@@ -7,15 +7,16 @@ function App() {
     LastName: string;
     Email: string;
     Password: string;
+    [key: string]: string;
   };
-  const [isFirstNameValid, setIsFirstNameValid] = useState<boolean | null>(
-    null
-  );
-  const [isLastNameValid, setIsLastNameValid] = useState<boolean | null>(null);
-  const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
-  const [isPasswordValid, setPasswordValid] = useState<boolean | null>(null);
+  type TIsValidProps = {
+    FirstName: boolean | null;
+    LastName: boolean | null;
+    Email: boolean | null;
+    Password: boolean | null;
+  };
 
-  const [lager, setLager] = useState<TUserProps[]>([]);
+  //   const [lager, setLager] = useState<TUserProps[]>([]);
   const [userInfo, setUserInfo] = useState<TUserProps>({
     FirstName: "",
     LastName: "",
@@ -30,55 +31,79 @@ function App() {
     Password: "",
   });
 
+  const [isValid, setIsValid] = useState<TIsValidProps>({
+    FirstName: null,
+    LastName: null,
+    Email: null,
+    Password: null,
+  });
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newUserInfo = {
+    const updatedUserInfo = {
       ...userInfo,
       [event.target.name]: event.target.value,
     };
-    setUserInfo(newUserInfo);
-    checkErrors(newUserInfo);
+    const currectInput = event.target.name;
+    setUserInfo(updatedUserInfo);
+    checkErrors(updatedUserInfo, currectInput);
   };
 
-  function checkErrors(updatedUserInfo: TUserProps) {
+  function checkErrors(updatedUserInfo: TUserProps, currectInput: string) {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      FirstName:
-        updatedUserInfo.FirstName === ""
+      [currectInput]:
+        updatedUserInfo[currectInput] === ""
           ? "Input Can't be empty"
-          : updatedUserInfo.FirstName.split("").length < 5
+          : updatedUserInfo[currectInput].split("").length < 5
           ? "Enter at least 5 chars"
           : "",
     }));
-    {
-      setIsFirstNameValid(
-        updatedUserInfo.FirstName !== "" &&
-          updatedUserInfo.FirstName.length >= 5
-      );
-    }
+    setIsValid((prevErrors) => ({
+      ...prevErrors,
+      [currectInput]:
+        updatedUserInfo[currectInput] !== "" &&
+        updatedUserInfo[currectInput].length >= 5,
+    }));
   }
 
   const handleSubmission = (event: React.FormEvent) => {
     event.preventDefault();
     if (Object.values(userInfo).some((value) => !value)) return;
-    setLager([userInfo]);
+    // setLager([userInfo]);
     setUserInfo({ FirstName: "", LastName: "", Email: "", Password: "" });
   };
 
   const handleFirstErrorMessage = (event: React.FormEvent) => {
     const target = event.target as HTMLInputElement;
-    if (userInfo.FirstName === "") {
+    if (userInfo[target.name] === "") {
       setErrors((prevErrors) => ({
         ...prevErrors,
         [target.name]: "Input Can't be empty",
       }));
     }
-    setIsFirstNameValid(false)
-    setIsLastNameValid(false)
-    setIsEmailValid(false)
-    setPasswordValid(false);
-  };
 
-  
+    {
+      errors.FirstName
+        ? setIsValid((prev) => ({ ...prev, FirstName: false }))
+        : null;
+    }
+
+    {
+      errors.LastName
+        ? setIsValid((prev) => ({ ...prev, LastName: false }))
+        : null;
+    }
+    {
+      errors.Email
+        ? setIsValid((prev) => ({ ...prev, Email: false }))
+        : null;
+    }
+    {
+      errors.Password
+        ? setIsValid((prev) => ({ ...prev, Password: false }))
+        : null;
+    }
+  };
 
   return (
     <>
@@ -94,9 +119,9 @@ function App() {
           name="FirstName"
           value={userInfo.FirstName}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isFirstNameValid === null
+            isValid.FirstName === null
               ? "border-gray-500"
-              : isFirstNameValid === true
+              : isValid.FirstName === true
               ? "border-green-600"
               : "border-red-600"
           }`}
@@ -113,9 +138,9 @@ function App() {
           name="LastName"
           value={userInfo.LastName}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isLastNameValid === null
+            isValid.LastName === null
               ? "border-gray-500"
-              : isLastNameValid === true
+              : isValid.LastName === true
               ? "border-green-600"
               : "border-red-600"
           }`}
@@ -132,9 +157,9 @@ function App() {
           name="Email"
           value={userInfo.Email}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isEmailValid === null
+            isValid.Email === null
               ? "border-gray-500"
-              : isEmailValid === true
+              : isValid.Email === true
               ? "border-green-600"
               : "border-red-600"
           }`}
@@ -151,9 +176,9 @@ function App() {
           name="Password"
           value={userInfo.Password}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isPasswordValid === null
+            isValid.Password === null
               ? "border-gray-500"
-              : isPasswordValid === true
+              : isValid.Password === true
               ? "border-green-600"
               : "border-red-600"
           }`}
