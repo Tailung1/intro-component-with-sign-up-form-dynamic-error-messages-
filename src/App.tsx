@@ -8,10 +8,12 @@ function App() {
     Email: string;
     Password: string;
   };
-  const [isFirstNameValid, setIsFirstNameValid] = useState<boolean>(false);
-  const [isLastNameValid, setIsLastNameValid] = useState<boolean>(false);
-  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
-  const [isPasswordValid, setPasswordValid] = useState<boolean>(false);
+  const [isFirstNameValid, setIsFirstNameValid] = useState<boolean | null>(
+    null
+  );
+  const [isLastNameValid, setIsLastNameValid] = useState<boolean | null>(null);
+  const [isEmailValid, setIsEmailValid] = useState<boolean | null>(null);
+  const [isPasswordValid, setPasswordValid] = useState<boolean | null>(null);
 
   const [lager, setLager] = useState<TUserProps[]>([]);
   const [userInfo, setUserInfo] = useState<TUserProps>({
@@ -70,7 +72,10 @@ function App() {
         [target.name]: "Input Can't be empty",
       }));
     }
+    setIsFirstNameValid(false)
   };
+
+  
 
   return (
     <>
@@ -86,7 +91,11 @@ function App() {
           name="FirstName"
           value={userInfo.FirstName}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isFirstNameValid ? "border-green-600" : "border-red-600"
+            isFirstNameValid === null
+              ? "border-gray-500"
+              : isFirstNameValid === true
+              ? "border-green-600"
+              : "border-red-600"
           }`}
         />
         {errors.FirstName ? (
@@ -99,7 +108,11 @@ function App() {
           name="LastName"
           value={userInfo.LastName}
           className={`border-[2px] rounded-lg p-[3px] border-solid ${
-            isPasswordValid ? "border-green-600" : "border-red-600"
+            isPasswordValid === null
+              ? "border-gray-500"
+              : isPasswordValid === true
+              ? "border-green-600"
+              : "border-red-600"
           }`}
         />
         <span>Email</span>
