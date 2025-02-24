@@ -86,15 +86,53 @@ function App() {
       }
     }
     setUserInfo(updatedUserInfo);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [currentInput]:
-        updatedUserInfo[currentInput] === ""
-          ? "Input Can't be empty"
-          : updatedUserInfo[currentInput].split("").length < 5
-          ? "Enter at least 5 chars"
-          : "",
-    }));
+
+    if(target.name==="FirstName") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          FirstName:
+            updatedUserInfo.FirstName === ""
+              ? "Input Can't be empty"
+              : updatedUserInfo.LastName.split("").length < 5
+              ? "FirstName must include min  5 chars"
+              : "",
+        }));
+
+    }
+    if(target.name ==="LastName") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          LastName:
+            updatedUserInfo.LastName === ""
+              ? "Input Can't be empty"
+              : updatedUserInfo.LastName.split("").length < 5
+              ? "LastName must include min  5 chars"
+              : "",
+        }));
+    }
+    if (target.name === "Email") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        Email:
+          updatedUserInfo.Email === ""
+            ? "Input Can't be empty"
+            : updatedUserInfo.Email.split("").length < 5
+            ? "Email must include min  5 chars"
+            : "",
+      }));
+    }
+    
+    if(target.name ==="Password") {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          Password:
+            updatedUserInfo.Password === ""
+              ? "Input Can't be empty"
+              : updatedUserInfo.Password.split("").length < 5
+              ? "Password must include min  5 chars"
+              : "",
+        }));
+    }
     setIsValid((prevErrors) => ({
       ...prevErrors,
       [currentInput]:
