@@ -113,10 +113,11 @@ function App() {
   const handleSubmission = (event: React.FormEvent) => {
     event.preventDefault();
     const updatedShake:Record<string,boolean>={}
-    const updatedIsValid={...isValid}
+    const updatedIsValid:TIsValidProps={...isValid}
     Object.entries(isValid).forEach(([key,value])=> {
+        const typedKey = key as keyof TIsValidProps; 
         if(!value) updatedShake[key]=true
-        if(value === null) updatedIsValid[key]=false
+        if(value === null) updatedIsValid[typedKey]=false
     })
     setShake(updatedShake);
     setIsValid(updatedIsValid)
