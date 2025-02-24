@@ -53,37 +53,17 @@ function App() {
     const target = event.target as HTMLInputElement;
 
     if (target.name === "FirstName") {
-      if (errors.FirstName === undefined) {
-        setIsValid((prev) => ({ ...prev, FirstName: false }));
-      } else if (errors.FirstName) {
-        setIsValid((prev) => ({ ...prev, FirstName: true }));
-      } else {
-        setIsValid((prev) => ({ ...prev, FirstName: false }));
-      }
+      setIsValid((prev) => ({
+        ...prev,
+        FirstName: !errors.FirstName, // If errors.FirstName is falsy (undefined, "", false), it's valid
+      }));
     } else if (target.name === "LastName") {
-      if (errors.LastName === undefined) {
-        setIsValid((prev) => ({ ...prev, LastName: false }));
-      } else if (errors.LastName) {
-        setIsValid((prev) => ({ ...prev, LastName: true }));
-      } else {
-        setIsValid((prev) => ({ ...prev, LastName: false }));
-      }
+      setIsValid((prev) => ({ ...prev, LastName: !errors.LastName }));
     } else if (target.name === "Email") {
-      if (errors.Email === undefined) {
-        setIsValid((prev) => ({ ...prev, Email: false }));
-      } else if (errors.Email) {
-        setIsValid((prev) => ({ ...prev, Email: true }));
-      } else {
-        setIsValid((prev) => ({ ...prev, Email: false }));
-      }
+     setIsValid(prev => ({...prev,Email:!errors.Email}))
+
     } else if (target.name === "Password") {
-      if (errors.Password === undefined) {
-        setIsValid((prev) => ({ ...prev, Password: false }));
-      } else if (errors.Password) {
-        setIsValid((prev) => ({ ...prev, Password: true }));
-      } else {
-        setIsValid((prev) => ({ ...prev, Password: false }));
-      }
+      setIsValid(prev =>({...prev, Password:!errors.Password}))
     }
     setUserInfo(updatedUserInfo);
 
@@ -151,16 +131,17 @@ function App() {
     event.preventDefault();
     const updatedShake: Record<string, boolean> = {};
     const updatedIsValid: TIsValidProps = { ...isValid };
-    const updatedErrors={...errors}
+    const updatedErrors = { ...errors };
     Object.entries(isValid).forEach(([key, value]) => {
       const typedKey = key as keyof TIsValidProps;
       if (!value) updatedShake[key] = true;
-      if (!value && !errors[typedKey]) updatedErrors[typedKey] = "Input can not be empty"
+      if (!value && !errors[typedKey])
+        updatedErrors[typedKey] = "Input can not be empty";
       if (value === null) updatedIsValid[typedKey] = false;
     });
     setShake(updatedShake);
     setIsValid(updatedIsValid);
-    setErrors(updatedErrors)
+    setErrors(updatedErrors);
     setTimeout(() => {
       setShake({});
     }, 500);
