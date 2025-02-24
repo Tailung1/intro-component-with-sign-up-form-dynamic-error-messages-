@@ -86,10 +86,6 @@ function App() {
       }
     }
     setUserInfo(updatedUserInfo);
-    checkErrors(updatedUserInfo, currentInput);
-  };
-
-  function checkErrors(updatedUserInfo: TUserProps, currentInput: string) {
     setErrors((prevErrors) => ({
       ...prevErrors,
       [currentInput]:
@@ -105,7 +101,8 @@ function App() {
         updatedUserInfo[currentInput] !== "" &&
         updatedUserInfo[currentInput].length >= 5,
     }));
-  }
+  };
+ 
    const [shake, setShake] = useState<Record<string, boolean>>({
      FirstName: false,
      LastName: false,
@@ -116,10 +113,13 @@ function App() {
   const handleSubmission = (event: React.FormEvent) => {
     event.preventDefault();
     const updatedShake:Record<string,boolean>={}
+    const updatedIsValid={...isValid}
     Object.entries(isValid).forEach(([key,value])=> {
         if(!value) updatedShake[key]=true
+        if(value === null) updatedIsValid[key]=false
     })
     setShake(updatedShake);
+    setIsValid(updatedIsValid)
     setTimeout(()=>{setShake({});},500);
     
     if(Object.values(isValid).some(value=>!value)) return;
