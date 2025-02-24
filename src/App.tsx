@@ -87,28 +87,27 @@ function App() {
     }
     setUserInfo(updatedUserInfo);
 
-    if(target.name==="FirstName") {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          FirstName:
-            updatedUserInfo.FirstName === ""
-              ? "Input Can't be empty"
-              : updatedUserInfo.FirstName.split("").length < 5
-              ? "FirstName must include min  5 chars"
-              : "",
-        }));
-
+    if (target.name === "FirstName") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        FirstName:
+          updatedUserInfo.FirstName === ""
+            ? "Input Can't be empty"
+            : updatedUserInfo.FirstName.split("").length < 5
+            ? "FirstName must include min  5 chars"
+            : "",
+      }));
     }
-    if(target.name ==="LastName") {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          LastName:
-            updatedUserInfo.LastName === ""
-              ? "Input Can't be empty"
-              : updatedUserInfo.LastName.split("").length < 5
-              ? "LastName must include min  5 chars"
-              : "",
-        }));
+    if (target.name === "LastName") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        LastName:
+          updatedUserInfo.LastName === ""
+            ? "Input Can't be empty"
+            : updatedUserInfo.LastName.split("").length < 5
+            ? "LastName must include min  5 chars"
+            : "",
+      }));
     }
     if (target.name === "Email") {
       setErrors((prevErrors) => ({
@@ -121,17 +120,17 @@ function App() {
             : "",
       }));
     }
-    
-    if(target.name ==="Password") {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          Password:
-            updatedUserInfo.Password === ""
-              ? "Input Can't be empty"
-              : updatedUserInfo.Password.split("").length < 5
-              ? "Password must include min  5 chars"
-              : "",
-        }));
+
+    if (target.name === "Password") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        Password:
+          updatedUserInfo.Password === ""
+            ? "Input Can't be empty"
+            : updatedUserInfo.Password.split("").length < 5
+            ? "Password must include min  5 chars"
+            : "",
+      }));
     }
     setIsValid((prevErrors) => ({
       ...prevErrors,
@@ -140,33 +139,35 @@ function App() {
         updatedUserInfo[currentInput].length >= 5,
     }));
   };
- 
-   const [shake, setShake] = useState<Record<string, boolean>>({
-     FirstName: false,
-     LastName: false,
-     Email: false,
-     Password: false,
-   });
+
+  const [shake, setShake] = useState<Record<string, boolean>>({
+    FirstName: false,
+    LastName: false,
+    Email: false,
+    Password: false,
+  });
 
   const handleSubmission = (event: React.FormEvent) => {
     event.preventDefault();
-    const updatedShake:Record<string,boolean>={}
-    const updatedIsValid:TIsValidProps={...isValid}
-    Object.entries(isValid).forEach(([key,value])=> {
-        const typedKey = key as keyof TIsValidProps; 
-        if(!value) updatedShake[key]=true
-        if(value === null) updatedIsValid[typedKey]=false
-    })
+    const updatedShake: Record<string, boolean> = {};
+    const updatedIsValid: TIsValidProps = { ...isValid };
+    const updatedErrors={...errors}
+    Object.entries(isValid).forEach(([key, value]) => {
+      const typedKey = key as keyof TIsValidProps;
+      if (!value) updatedShake[key] = true;
+      if (!value && !errors[typedKey]) updatedErrors[typedKey] = "Input can not be empty"
+      if (value === null) updatedIsValid[typedKey] = false;
+    });
     setShake(updatedShake);
-    setIsValid(updatedIsValid)
-    setTimeout(()=>{setShake({});},500);
-    
-    if(Object.values(isValid).some(value=>!value)) return;
+    setIsValid(updatedIsValid);
+    setErrors(updatedErrors)
+    setTimeout(() => {
+      setShake({});
+    }, 500);
 
-    setUserInfo({FirstName: "",
-    LastName: "",
-    Email: "",
-    Password: "",})
+    if (Object.values(isValid).some((value) => !value)) return;
+
+    setUserInfo({ FirstName: "", LastName: "", Email: "", Password: "" });
 
     setIsValid({
       FirstName: null,
@@ -174,7 +175,6 @@ function App() {
       Email: null,
       Password: null,
     });
-
   };
 
   return (
@@ -231,7 +231,7 @@ function App() {
               : isValid.Email === true
               ? "border-green-600"
               : "border-red-600"
-          } ${shake.Email?"shake" : null}`}
+          } ${shake.Email ? "shake" : null}`}
         />
         {errors.Email ? (
           <p className="text-red-600 text-sm">{errors.Email}</p>
