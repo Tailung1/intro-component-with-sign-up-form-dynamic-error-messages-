@@ -93,7 +93,7 @@ function App() {
           FirstName:
             updatedUserInfo.FirstName === ""
               ? "Input Can't be empty"
-              : updatedUserInfo.LastName.split("").length < 5
+              : updatedUserInfo.FirstName.split("").length < 5
               ? "FirstName must include min  5 chars"
               : "",
         }));
